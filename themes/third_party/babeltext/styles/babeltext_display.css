@@ -1,0 +1,40 @@
+/* Tabbed Layout */
+
+.bt_tabs {
+	margin-top: 10px;
+}
+
+.bt_tabnav li {
+	display: inline-block;
+}
+.bt_tabnav a,
+.bt_tabnav a:link,
+.bt_tabnav a:visited {
+	display: block;
+	padding: 0 10px;
+	line-height: 32px;
+	color: #fff;
+	text-decoration: none;
+	background-color: #57676f;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+.bt_tabnav li a.selected {
+	color: #57676f;
+	background-color: #9aa9b3;
+}
+.bt_tab {
+	padding: 5px;
+	background-color: #9aa9b3;
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;
+	border-bottom-left-radius: 3px;
+}
+.bt_tab.closed {
+	display: none;
+}
+.bt_tab input[type=text],
+.bt_tab textarea {
+	display: block;
+	margin: 0;
+}
