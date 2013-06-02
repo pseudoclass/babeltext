@@ -57,12 +57,12 @@ The following parameters can be used in conjunction with the custom field tag:
 
 My initial plan is to release this fieldtype as a Beta to the EE Community to see if other EE Devs find it useful. If there is enough interest generated, I plan on working out the kinks, offering it on Devot:ee, and adding the following improvements:
 
-1. Caching and performance tweaks
-2. General code cleanup
-3. Channel data updates on removing languages
-4. Compatibility with SafeCracker
-5. Compatibility with Low Variables
-6. Compatibility with Matrix and Wygwam
+* Caching and performance tweaks
+* General code cleanup
+* Channel data updates on removing languages
+* Compatibility with SafeCracker
+* Compatibility with Low Variables
+* Compatibility with Matrix and Wygwam
 
 ### Version History
 
