@@ -1,6 +1,6 @@
 # Babeltext
 
-## Multilingual Text Fieldtype for ExpressionEngine
+## Multilingual Text Fieldtype for ExpressionEngine (Beta)
 
 By: [Pseudoclass](http://pseudoclass.com/)
 
