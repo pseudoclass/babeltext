@@ -4,7 +4,7 @@
 
 By: [Pseudoclass](http://pseudoclass.com/)
 
-There are plenty of ways to configure a full multilingual site in EE using modules like Transcribe, Biber, and Structure however, there are times when you may only need small portions of a site in multiple languages and it does not warrant a full multilingual framework.
+There are plenty of ways to configure a full multilingual site in EE using modules like Transcribe, Publisher, and Structure however, there are times when you may only need small portions of a site in multiple languages and it does not warrant a full multilingual framework.
 
 ![Example Babeltext Text Input](https://dl.dropboxusercontent.com/u/1671252/babeltext/sample_textinput_1.png)
 
@@ -58,7 +58,7 @@ Use the custom fieldtype short name to output your content as normal. Here's a s
 
 The following parameters can be used in conjunction with the custom field tag:
 
-**language** : Set this to the two letter ISO language code of the  language you wish to output. You could use a global variable in this case to set it dynamically (i.e.; {custom_field_name language="{lang_code}"}). If no language is set or the parameter is set to the default "dynamic", the Babeltext field will attempt to find the language code within the current URL structure (i.e.; http://example.com/de/ - displays the German version of the text). If the language was not set in the Babeltext field or none can be found, the tag will output the contents of the first language you configured in the list as a default.
+**language** : Set this to the two letter ISO language code of the  language you wish to output. You could use a [global variable](http://cwcrawley.co.uk/2010/01/multi-lingual-websites-in-expressionengine/) in this case to set it dynamically (i.e.; {custom_field_name language="{lang_code}"}). If no language is set or the parameter is set to the default "dynamic", the Babeltext field will attempt to find the language code within the current URL structure (i.e.; http://example.com/de/ - displays the German version of the text). If the language was not set in the Babeltext field or none can be found, the tag will output the contents of the first language you configured in the list as a default.
 
 ## Roadmap
 
