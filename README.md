@@ -4,7 +4,7 @@
 
 By: [Pseudoclass](http://pseudoclass.com/)
 
-There are plenty of ways to configure a full multilingual site in EE using modules like Transcribe, Publisher, and Structure however, there are times when you may only need small portions of a site in multiple languages and it does not warrant a full multilingual framework.
+There are plenty of ways to configure a full multilingual site in EE using modules like [Transcribe](http://eeharbor.com/transcribe), [Publisher](http://boldminded.com/add-ons/publisher), and [Structure](http://buildwithstructure.com/) however, there are times when you may only need small portions of a site in multiple languages and it does not warrant a full multilingual framework.
 
 ![Example Babeltext Text Input](https://dl.dropboxusercontent.com/u/1671252/babeltext/sample_textinput_1.png)
 
