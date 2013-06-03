@@ -68,6 +68,7 @@ My initial plan is to release this fieldtype as a Beta to the EE Community to se
 * General code cleanup
 * Spit-shine the interfaces a bit more
 * Channel data updates on removing languages
+* Tag pair to output language texts in a loop
 * Compatibility with SafeCracker
 * Compatibility with Low Variables
 * Compatibility with Matrix and Wygwam
