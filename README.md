@@ -22,6 +22,11 @@ Babeltext is a multilingual text entry fieldtype which will allow you to configu
 
 ## Usage
 
+### Requirements
+
+1. ExpressionEngine 2.5.3 and above
+2. Native Rich Text Editor installed
+
 ### Installation
 
 1. Upload the system/expressionengine/third_party/babeltext/ folder to your system/expressionengine/third_party/babeltext folder.
@@ -59,10 +64,13 @@ My initial plan is to release this fieldtype as a Beta to the EE Community to se
 
 * Caching and performance tweaks
 * General code cleanup
+* Spit-shine the interfaces a bit more
 * Channel data updates on removing languages
 * Compatibility with SafeCracker
 * Compatibility with Low Variables
 * Compatibility with Matrix and Wygwam
+* Compatibility with Better Workflow
+* Any suggestions you may have are welcome... Hit me up on [Twitter](https://twitter.com/pseudoclass) 
 
 ### Version History
 
