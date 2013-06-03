@@ -1,6 +1,8 @@
 # Babeltext
 
-## A Multilingual Text Entry Fieldtype Addon for ExpressionEngine by [Pseudoclass](http://pseudoclass.com/).
+## Multilingual Text Fieldtype for ExpressionEngine
+
+By: [Pseudoclass](http://pseudoclass.com/)
 
 There are plenty of ways to configure a full multilingual site in EE using modules like Transcribe, Biber, and Structure however, there are times when you may only need small portions of a site in multiple languages and it does not warrant a full multilingual framework.
 
