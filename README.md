@@ -4,7 +4,7 @@
 
 By: [Pseudoclass](http://pseudoclass.com/)
 
-There are plenty of ways to configure a full multilingual site in EE using modules like [Transcribe](http://eeharbor.com/transcribe), [Publisher](http://boldminded.com/add-ons/publisher), and [Structure](http://buildwithstructure.com/) however, there are times when you may only need small portions of a site in multiple languages and it does not warrant a full multilingual framework.
+There are plenty of ways to configure a full multilingual site in EE using modules like [Transcribe](http://eeharbor.com/transcribe), [Publisher](http://boldminded.com/add-ons/publisher), and [Structure](http://buildwithstructure.com/) however, there are times when you may only need small portions of a site in multiple languages, and it does not warrant a full multilingual framework.
 
 ![Example Babeltext Text Input](https://dl.dropboxusercontent.com/u/1671252/babeltext/sample_textinput_1.png)
 
@@ -31,7 +31,7 @@ Babeltext is a multilingual text entry fieldtype which will allow you to configu
 
 ### Installation
 
-1. Upload the system/expressionengine/third_party/babeltext/ folder to your system/expressionengine/third_party/babeltext folder.
+1. Upload the system/expressionengine/third_party/babeltext/ folder to your system/expressionengine/third_party/ folder.
 2. Upload the themes/third_party/babeltext/ folder to your themes/third_party/ folder
 3. Go to Addons > Fieldtypes in your Control Panel and click Install to install the Babeltext fieldtype
 
