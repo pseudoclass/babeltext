@@ -22,6 +22,9 @@ class Babeltext_ft extends EE_Fieldtype {
 		'wo','xh','yi','yo','za','zh','zu'
 	);
 	
+	// Required to use tag pairs
+	var $has_array_data = TRUE;
+	
 	
 	// --------------------------------------------------------------------
 		
@@ -489,10 +492,21 @@ class Babeltext_ft extends EE_Fieldtype {
 			
 		}
 		
-		
 		// Outputting the data to the tag ------------------------------------------------
 		
-		return $return_data[0]['bt_content']; // First element in the return data array (in case they have input multiple)
+		// Tag Pair Output
+		if($tagdata !== FALSE)
+		{
+			$output = $this->EE->TMPL->parse_variables($tagdata, $return_data);
+		}
+		
+		// Single Tag Output
+		else
+		{
+			$output = $return_data[0]['bt_content']; // First content element in the return data array (in case they have input multiple in a single tag)
+		}
+		
+		return $output;
 		
 	}
 	
