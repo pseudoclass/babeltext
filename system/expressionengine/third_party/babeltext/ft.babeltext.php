@@ -5,7 +5,7 @@ class Babeltext_ft extends EE_Fieldtype {
 	// Fieldtype Info
 	public $info = array(
 		'name'		=> 'Babeltext',
-		'version'	=> '1.0'
+		'version'	=> '0.2'
 	);
 	
 	// Temp array structure of languages
@@ -81,7 +81,8 @@ class Babeltext_ft extends EE_Fieldtype {
 		$data_arr = array('fields' => array());
 		
 		// Loop through all the languages in the settings
-		foreach($this->settings['languages'] as $key => $value) {
+		foreach($this->settings['languages'] as $key => $value)
+		{
 			
 			// Start creating the array we will use in the view file
 			$data_arr['fields'][$key] = array(
@@ -90,9 +91,12 @@ class Babeltext_ft extends EE_Fieldtype {
 			);
 			
 			// Check if the dummy field has already been submitted (to use previous submitted data as content in case of a validation error)
-			if($this->EE->input->post('field_id_'.$this->field_id)) {
+			if($this->EE->input->post('field_id_'.$this->field_id))
+			{
 				$content = $this->EE->input->post('bt_' . $key . '_field_id_' . $this->field_id);
-			} else {
+			}
+			else
+			{
 				$content = (array_key_exists($key, $data) ? $data[$key]['content'] : '');
 			}
 			
@@ -103,10 +107,13 @@ class Babeltext_ft extends EE_Fieldtype {
 				'value'	=> $content,
 				'dir'	=> $value['dir']
 			);
-			if($this->settings['content_type'] == 'text') {
+			if($this->settings['content_type'] == 'text')
+			{
 				$data_arr['fields'][$key]['field'] = form_input($params);
-			} else {
-				// $params['rows'] = $this->settings['field_ta_rows'];
+			}
+			else
+			{
+				$params['rows'] = $this->settings['field_ta_rows'];
 				$data_arr['fields'][$key]['field'] = form_textarea($params);
 			}
 			
@@ -116,7 +123,8 @@ class Babeltext_ft extends EE_Fieldtype {
 		$data_arr['placeholder_field'] = form_hidden('field_id_'.$this->field_id, 'babeltext placeholder');
 		
 		$data_arr['all_languages'] = array();
-		foreach($this->language_codes as $lang_id) {
+		foreach($this->language_codes as $lang_id)
+		{
 			$data_arr['all_languages'][$lang_id] = lang('bt_lang_'.$lang_id);
 		}
 		
@@ -129,26 +137,24 @@ class Babeltext_ft extends EE_Fieldtype {
 		$this->EE->cp->add_to_foot('<script type="text/javascript" src="' . $theme_folder . 'scripts/babeltext_display.js"></script>');
 		
 		// Set the RTE JS if it has been selected as the fieldtype
-		if($this->settings['content_type'] == 'rte') {
-			$this->EE->cp->add_to_foot('
-			<script type="text/javascript">
-				$(function() {
-					$(".bt_tabs textarea").wysihat({
-						"buttons" : [
-							"bold",
-							"italic",
-							"blockquote",
-							"unordered_list",
-							"ordered_list",
-							"link",
-							"image",
-							"view_source"
-						],
-						"rows" : 12
-					});
-				});
-			</script>'
+		if($this->settings['content_type'] == 'rte')
+		{
+			
+			// Access the RTE library package
+			$this->EE->load->add_package_path(PATH_MOD.'rte');
+			$this->EE->load->library('rte_lib');
+			
+			// Load JS lib
+			$this->EE->load->library('javascript');
+
+			// Add RTE JS to CP
+			$this->EE->javascript->output(
+				$this->EE->rte_lib->build_js(0, '.bt_tabs textarea', NULL, TRUE)
 			);
+
+			// Add FileManager JS to CP
+			$this->EE->load->library(array('filemanager', 'file_field'));
+			$this->EE->file_field->browser();
 
 		}
 		
@@ -157,20 +163,6 @@ class Babeltext_ft extends EE_Fieldtype {
 		
 	}
 
-
-	// --------------------------------------------------------------------
-	
-	/**
-	 * Display Global Settings
-	 *
-	 * @access	public
-	 * @return	form contents
-	 *
-	 */
-	/*function display_global_settings()
-	{
-		
-	}*/
 
 	// --------------------------------------------------------------------
 	
@@ -187,16 +179,25 @@ class Babeltext_ft extends EE_Fieldtype {
 		// Load the language file
 		$this->EE->lang->loadfile('babeltext');
 		
-		// Content type options
+		// Content type options (Basic)
 		$type_options = array(
 			'text' => lang('bt_text_input'),
-			'textarea' => lang('bt_textarea'),
-			'rte' => lang('bt_rich_text_editor')
+			'textarea' => lang('bt_textarea')
 		);
+		
+		// Check if the RTE is installed to add it as an option as well
+		$this->EE->load->library('api');
+		$this->EE->api->instantiate('channel_fields');
+		$inst_fields = $this->EE->api_channel_fields->fetch_installed_fieldtypes();
+		if(array_key_exists('rte', $inst_fields))
+		{
+			$type_options['rte'] = lang('bt_rich_text_editor');
+		}
 		
 		// If there is no data, use the global setting defaults
 		$data['languages'] = (array_key_exists('languages', $data) ? $data['languages'] : $this->settings['languages']);
 		$data['content_type'] = (array_key_exists('content_type', $data) ? $data['content_type'] : $this->settings['content_type']);
+		$data['field_ta_rows'] = (array_key_exists('field_ta_rows', $data) ? $data['field_ta_rows'] : $this->settings['field_ta_rows']);
 		
 		// Add required checkboxes to the output and get a list of the language keys and names in their correct order
 		$lang_keys = array();
@@ -204,7 +205,8 @@ class Babeltext_ft extends EE_Fieldtype {
 		$is_required = $data['field_required'];
 		
 		// Create form elements
-		foreach($data['languages'] as $key => $value) {
+		foreach($data['languages'] as $key => $value)
+		{
 			
 			// Required Checkbox
 			$req_params = array(
@@ -212,9 +214,11 @@ class Babeltext_ft extends EE_Fieldtype {
 				'value' => $key,
 				'checked' => $value['required']
 			);
-			if($is_required == 'n') {
+			if($is_required == 'n')
+			{
 				$req_params['disabled'] = 'disabled';
 			}
+			
 			$data['languages'][$key]['req_checkbox'] = form_checkbox($req_params);
 			
 			// Text Direction Radio Group
@@ -224,6 +228,7 @@ class Babeltext_ft extends EE_Fieldtype {
 			// Append Language Key and Name
 			$lang_keys[] = $key;
 			$lang_names[] = $value['name'];
+			
 		}
 		
 		// Add the hidden language key and name fields
@@ -231,17 +236,42 @@ class Babeltext_ft extends EE_Fieldtype {
 		$data['lang_names_hidden'] = form_hidden('bt_language_names', implode(',', $lang_names));
 		
 		// Get all of the available languages into a select but without any current languages
-		$data['lang_dropdown'] = form_dropdown('bt_lang_select', $this->_create_lang_array($lang_keys));
+		$data['lang_dropdown'] = form_dropdown(
+			'bt_lang_select',
+			$this->_create_lang_array($lang_keys),
+			'',
+			'id="bt_lang_select"'
+		);
 		
-		// Send the data to the view file to parse the html
+		// Send the data to the view file to parse it into html
 		$lang_table = $this->EE->load->view('ft_settings', $data, TRUE);
 		
-		// Parse the texts for the labels
+		// Create the texts for the labels
 		$type_label = '<label for="bt_content_type">' . lang('bt_field_type_label') . '</label><br/>' . lang('bt_field_type_desc');
+		$rows_label = '<label for="bt_ta_rows">' . lang('bt_num_rows_label') . '</label><br/>' . lang('bt_num_rows_desc');
 		$lang_label = '<label for="bt_lang_select">' . lang('bt_languages_label') . '</label><br/>' . lang('bt_languages_desc');
 		
+		// Create the input fields using the CI form helper
+		
+		// Content Type
+		$type_control = form_dropdown(
+			'bt_content_type',
+			$type_options,
+			$data['content_type'],
+			'id="bt_content_type"'
+		);
+		
+		// Textarea and RTE rows
+		$ta_rows_control = form_input(array(
+			'name' => 'bt_ta_rows',
+			'id' => 'bt_ta_rows',
+			'value' => $data['field_ta_rows'],
+			'size' => '5'
+		));
+		
 		// Output the field options in rows
-		$this->EE->table->add_row($type_label, form_dropdown('bt_content_type', $type_options, $data['content_type']));
+		$this->EE->table->add_row($type_label, $type_control);
+		$this->EE->table->add_row($rows_label, $ta_rows_control);
 		$this->EE->table->add_row($lang_label, $lang_table);
 		
 		// Add in the CSS and JS if it's not already cached
@@ -254,7 +284,6 @@ class Babeltext_ft extends EE_Fieldtype {
 			var  BT_LANG_ERR_REQUIRED = "' . lang('bt_error_required') . '";
 		</script>');
 		$this->EE->cp->add_to_foot('<script type="text/javascript" src="' . $theme_folder . 'scripts/babeltext_settings.js"></script>');
-		
 
 	}
 	
@@ -268,16 +297,18 @@ class Babeltext_ft extends EE_Fieldtype {
 	 * @return	array of all available languages
 	 *
 	 */
-	private function _create_lang_array($excluded) {
+	private function _create_lang_array($excluded)
+	{
 		
 		// Load the language file
 		$this->EE->lang->loadfile('babeltext');
 		
 		// Create the array looping through codes and getting names from the language file and excluding items
 		$lang_options = array();
-		foreach($this->language_codes as $code) {
-			
-			if(!in_array($code, $excluded)) {
+		foreach($this->language_codes as $code)
+		{
+			if(!in_array($code, $excluded))
+			{
 				$lang_options[$code] = lang('bt_lang_' . $code);
 			}
 		}
@@ -306,7 +337,8 @@ class Babeltext_ft extends EE_Fieldtype {
 		// Default settings
 		$defaults = array(
 			'languages' => $this->languages,
-			'content_type' => 'text'
+			'content_type' => 'text',
+			'field_ta_rows' => 10
 		);		
 
 		return $defaults;
@@ -377,7 +409,8 @@ class Babeltext_ft extends EE_Fieldtype {
 	{
 		
 		// If no data, return empty string
-		if(empty($data)) {
+		if(empty($data))
+		{
 			return;
 		}
 		
@@ -387,14 +420,17 @@ class Babeltext_ft extends EE_Fieldtype {
 		$return_data = array();
 		
 		// Get the language parameter if it exists and is not dynamic
-		if((array_key_exists('language', $params)) && ($params['language'] !== 'dynamic') && ($params['language'] !== '')) {
+		if((array_key_exists('language', $params)) && ($params['language'] !== 'dynamic') && ($params['language'] !== ''))
+		{
 			
 			// Get the keys to iterate through and use them on the data array to get the content in the order supplied by the tag param
 			$lang_keys = explode('|', $params['language']);
 			
-			foreach($lang_keys as $key) {
+			foreach($lang_keys as $key)
+			{
 			
-				if(array_key_exists($key, $data)) {
+				if(array_key_exists($key, $data))
+				{
 					$return_data[] = array(
 						'bt_id' => $key,
 						'bt_name' => $data[$key]['name'],
@@ -413,16 +449,20 @@ class Babeltext_ft extends EE_Fieldtype {
 			// Get the current URL string and parse it to check the first segment after the domain (i.e.; http://example.com/es/)
 			$current_url = $this->EE->functions->fetch_current_uri();
 			$parsed_url = parse_url($current_url);
-			if(array_key_exists('path', $parsed_url)) {
+			if(array_key_exists('path', $parsed_url))
+			{
 				$path = $parsed_url['path'];
 				$path_parts = explode('/', $path);
 				$segment = $path_parts[1]; // 1 not 0 because the path string begins with a slash
-			} else {
+			}
+			else
+			{
 				$segment = FALSE;
 			}
 			
 			// If the segment matches a language key, add that languages data to the return data
-			if($segment && array_key_exists($segment, $data)) {
+			if($segment && array_key_exists($segment, $data))
+			{
 			
 				$return_data[] = array(
 					'bt_id' => $segment,
@@ -430,8 +470,10 @@ class Babeltext_ft extends EE_Fieldtype {
 					'bt_content' => $data[$segment]['content']
 				);
 			
+			}
+			else
 			// The segment doesn't match a langauge key. Get the first language in the settings as the default
-			} else {
+			{
 				
 				$setting_langs = $this->settings['languages'];
 				reset($setting_langs);
@@ -472,9 +514,11 @@ class Babeltext_ft extends EE_Fieldtype {
 		
 		// Convert the input into an associative array structure
 		$data_arr = array();
-		foreach($this->settings['languages'] as $key => $value) {
+		foreach($this->settings['languages'] as $key => $value)
+		{
 			$content = trim($this->EE->input->post('bt_' . $key . '_field_id_' . $this->field_id));
-			if($content !== '') {
+			if($content !== '')
+			{
 				$data_arr[$key] = array(
 					'name' => $value['name'],
 					'content' => $content
@@ -528,8 +572,10 @@ class Babeltext_ft extends EE_Fieldtype {
 		
 		$data['languages'] = array();
 		
-		if(count($language_keys) == count($language_names)) {
-			for($i = 0; $i < count($language_keys); $i++) {
+		if(count($language_keys) == count($language_names))
+		{
+			for($i = 0; $i < count($language_keys); $i++)
+			{
 				$key = $language_keys[$i];
 				$dir = $this->EE->input->post('bt_' . $key . '_dir');
 				$data['languages'][$key] = array(
@@ -541,15 +587,17 @@ class Babeltext_ft extends EE_Fieldtype {
 		}
 		
 		$data['content_type'] = $this->EE->input->post('bt_content_type');
+		$data['field_ta_rows'] = ($data['content_type'] == 'text' ? 10 : $this->EE->input->post('bt_ta_rows'));
 		
 		// If this field has been marked as required, make sure at least one language has been set to required
-		if(($this->EE->input->post('field_required') == 'y') && (count($language_req) < 1)) {
+		if(($this->EE->input->post('field_required') == 'y') && (count($language_req) < 1))
+		{
 			return 'There has been an error';
-		} else {
+		}
+		else
+		{
 			return $data;
 		}
-		
-		// return $data_arr;
 		
 	}
 	
@@ -604,16 +652,22 @@ class Babeltext_ft extends EE_Fieldtype {
 		$error_langs = array();
 		
 		// Loop through the settings to test on required fields 
-		foreach($this->settings['languages'] as $key => $value) {
+		foreach($this->settings['languages'] as $key => $value)
+		{
 			
-			if($value['required'] === TRUE) {
+			if($value['required'] === TRUE)
+			{
 				
 				$post_data = trim($this->EE->input->post('bt_' . $key . '_field_id_' . $this->field_id));
 				$post_data = strip_tags($post_data, '<img>');
 				$total_req += 1;
-				if(empty($post_data)) {
+				
+				if(empty($post_data))
+				{
 					$error_langs[] = lang('bt_lang_' . $key);
-				} else {
+				}
+				else
+				{
 					$total_valid += 1;
 				}
 				
@@ -622,9 +676,12 @@ class Babeltext_ft extends EE_Fieldtype {
 		}
 		
 		// Check if this field is required, if so check that all required languages are included
-		if(($this->settings['field_required'] == 'y') && ($total_valid != $total_req)) {
+		if(($this->settings['field_required'] == 'y') && ($total_valid != $total_req))
+		{
 			return (lang('bt_err_req_langs') . implode(', ', $error_langs));
-		} else {
+		}
+		else
+		{
 			return TRUE;
 		}
 		

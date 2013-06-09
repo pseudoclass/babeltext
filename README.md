@@ -27,7 +27,7 @@ Babeltext is a multilingual text entry fieldtype which will allow you to configu
 ### Requirements
 
 1. ExpressionEngine 2.5.3 and above
-2. Native Rich Text Editor installed
+2. Native Rich Text Editor installed (If you wish to use it as a content type)
 
 ### Installation
 
@@ -65,8 +65,6 @@ The following parameters can be used in conjunction with the custom field tag:
 My initial plan is to release this fieldtype as a Beta to the EE Community to see if other EE Devs find it useful. If there is enough interest generated, I plan on working out the kinks, offering it on Devot:ee, and adding the following improvements:
 
 * Caching and performance tweaks
-* General code cleanup
-* Spit-shine the interfaces a bit more
 * Channel data updates on removing languages
 * Tag pair to output language texts in a loop
 * Compatibility with SafeCracker
@@ -77,4 +75,10 @@ My initial plan is to release this fieldtype as a Beta to the EE Community to se
 
 ### Version History
 
-* 0.1 Initial Beta Release (02/06/2013)
+#### 0.1 - 02/06/2013
+* Initial working beta
+
+#### 0.2 - 09/06/2013
+* Added better Rich Text Editor Integration. Now checks for installation of the RTE and uses user toolsets.
+* Added row number input for textareas and Rich Text Editor input types.
+* Cleaned up code to match [EE coding style guide](http://ellislab.com/expressionengine/user-guide/development/guidelines/general.html)

@@ -1,19 +1,31 @@
 $(function() {
 				
-	// jQuery UI 'sortable' method for table rows
+	// -----------------------------------------------
+	// DOM Elements we will work with
 	// -----------------------------------------------
 	
+	// Language table and inputs
 	var $bt_sortable_table = $('table.bt_languages tbody');
 	var $bt_language_keys = $('input[name=bt_language_keys]');
 	var $bt_language_names = $('input[name=bt_language_names]');
 	var $bt_lang_select = $('select[name=bt_lang_select]');
 	var $bt_lang_add = $('input[name=bt_lang_add]');
 	
+	// Field input type & rows input
+	var $bt_content_type = $('select[name=bt_content_type]');
+	var $bt_ta_rows = $('input[name=bt_ta_rows]');
+	
 	// Standard EE Form Fields
 	var $field_required = $('input[name=field_required]');
 	var $field_submit = $('input[name=field_edit_submit]');
 	
-	// 1. Helper which preserves the widths of cells
+	
+	// -----------------------------------------------
+	// Sortable Language table
+	// -----------------------------------------------
+	
+	// Helper which preserves the widths of cells
+	
 	var fixHelper = function(e, ui) {
 		ui.children().each(function() {
 			$(this).width($(this).width());
@@ -22,6 +34,7 @@ $(function() {
 	};
 	
 	// Global function to sort selects alphabetically and leave blank at top and selected
+	
 	$.fn.sortOptions = function() {
 	    $(this).each(function(){
 	        var $select = $(this);
@@ -35,7 +48,8 @@ $(function() {
 	    });
 	}
 	
-	// 2. Apply sortable plugin to table
+	// Apply sortable plugin to table
+	
 	$bt_sortable_table.sortable({
 		helper : fixHelper,
 		axis: 'y',
@@ -47,15 +61,8 @@ $(function() {
 		}
 	}).disableSelection();
 	
-	// 3. Bind the add language and remove langauge functions to the controls
-	$bt_lang_add.on('click', add_language);
-	$bt_sortable_table.on('click', 'a.bt_remove', remove_language);
-	$field_required.on('change', set_required);
-	$field_submit.on('click', check_required);
-	
-	
-	// SET VALUES METHOD - Callback function to reorder the hidden form elements values
-	
+	// SET VALUES - Function to reorder the hidden form elements values
+
 	function set_values(id_arr, name_arr) {
 		
 		// Set the value on the hidden form elements
@@ -64,7 +71,7 @@ $(function() {
 		
 	}
 	
-	// REMOVE LANGUAGE METHOD - Callback function to remove a languages from the table
+	// REMOVE LANGUAGE - Function to remove a languages from the table
 	
 	function remove_language(e) {
 		
@@ -99,7 +106,7 @@ $(function() {
 		
 	}
 	
-	// ADD LANGUAGE METHOD - Callback function to add langauges to the table
+	// ADD LANGUAGE - Function to add langauges to the table
 	
 	function add_language(e) {
 		
@@ -138,7 +145,16 @@ $(function() {
 		
 	}
 	
-	// SET REQUIRED METHOD - Callback to enable and disable required languages based on if the field is required
+	// Bind the add language and remove langauge functions to the controls in the table
+	$bt_lang_add.on('click', add_language);
+	$bt_sortable_table.on('click', 'a.bt_remove', remove_language);
+	
+	
+	// -----------------------------------------------
+	// Validation
+	// -----------------------------------------------
+	
+	// SET REQUIRED - Function to enable and disable required languages based on if the field is required
 	
 	function set_required(e) {
 		
@@ -154,7 +170,7 @@ $(function() {
 		
 	}
 	
-	// CHECK REQUIRED METHOD - Callback to check if required languages need to be set
+	// CHECK REQUIRED - Function to check if required languages need to be set
 	
 	function check_required(e) {
 		
@@ -175,5 +191,37 @@ $(function() {
 		}
 		
 	}
+	
+	// Bind the set required and check required functions to the EE 'required' field and submit button
+	$field_required.on('change', set_required);
+	$field_submit.on('click', check_required);
+	
+	
+	// -----------------------------------------------
+	// Content Type Rows
+	// -----------------------------------------------
+	
+	// Hide the input rows if the type is text
+	if($bt_content_type.val() == 'text') {
+		$bt_ta_rows.parent().parent().hide();
+	}
+	
+	// TOGGLE ROWS - Function to toggle the text input rows option
+	
+	function toggle_rows(e) {
+		
+		var $target = $(e.target);
+		var input_type = $target.val();
+		
+		if(input_type == 'text') {
+			$bt_ta_rows.parent().parent().hide();
+		} else {
+			$bt_ta_rows.parent().parent().show();
+		}
+		
+	}
+	
+	// Bind the toggle rows function to the input type select
+	$bt_content_type.on('change', toggle_rows);
 	
 });

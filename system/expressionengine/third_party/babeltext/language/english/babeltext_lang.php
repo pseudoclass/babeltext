@@ -24,6 +24,8 @@ $lang = array(
 	'bt_text_input' => 'Text Input',
 	'bt_textarea' => 'Textarea',
 	'bt_rich_text_editor' => 'Rich Text Editor',
+	'bt_num_rows_label' => 'Number of rows',
+	'bt_num_rows_desc' => 'Include the number of rows for the fields height.',
 	'bt_languages_label' => 'Languages',
 	'bt_languages_desc' => 'Add languages by selecting them from the dropdown and pressing the add button. You can drag the languages in the table up and down to change the order in which they will appear in the entries form field. Select languages you wish to be required by using the checkboxes, and remove languages by clicking the remove icon. The first language in the list, marked with the asterisk (*), will be the default content displayed if a language is not specified in the tag parameter and a valid language key cannot be found in the first segment of the URL (i.e.; http://example.com/es = Spanish version of the content will be called).',
 	
