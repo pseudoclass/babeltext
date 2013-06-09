@@ -68,11 +68,13 @@ Use the custom fieldtype short name as a tag pair to output the data in multiple
 
         <!-- Use the field name as a tag pair --->
         {custom_field_name language="es|fr|en"}
+
             <!-- Single variables available for each language in the loop -->
             <div lang="{bt_id}">
                 <h3>{bt_name}</h3>
 				<p>{bt_content}</p>
             </div>
+
         {/custom_field_name}
 
     {/exp:channel entries}
