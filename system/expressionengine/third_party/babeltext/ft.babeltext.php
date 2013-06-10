@@ -1,5 +1,13 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * Babeltext Fieldtype Class
+ *
+ * @package   Babeltext
+ * @author    Michael Van Dorth <michael@pseudoclass.com>
+ * @copyright Copyright (c) 2013 Michael Van Dorth
+ */
+
 class Babeltext_ft extends EE_Fieldtype {
 	
 	// Fieldtype Info
