@@ -85,6 +85,8 @@ Use the custom fieldtype short name as a tag pair to output the data in multiple
 
 ##### Single Variables
 
+These variables are available within the tag pair:
+
 * **bt_id** : The two letter ISO language code of the language (i.e.; "en", "es", etc)
 * **bt_name** : The name of the language (i.e.; "English", "Spanish", etc)
 * **bt_content** : The content for the language
