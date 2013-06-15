@@ -98,7 +98,7 @@ My initial plan is to release this fieldtype as a Beta to the EE Community to se
 * ~~General Code Cleanup~~
 * ~~Support for Native EE Rich Text Editor~~
 * ~~Tag pair to output language texts in a loop~~
-* Channel data updates on removing languages
+* ~~Channel data updates on removing languages~~
 * Caching and performance tweaks
 * Support for SafeCracker
 * Support for Low Variables
@@ -116,3 +116,8 @@ My initial plan is to release this fieldtype as a Beta to the EE Community to se
 * Added number of rows input for textareas and Rich Text Editor input types, for height control in the entry form.
 * Added Tag Pair option allowing you to loop though multiple languages as specified in the "language" tag parameter.
 * Cleaned up code to match the [EE coding style guidelines](http://ellislab.com/expressionengine/user-guide/development/guidelines/general.html)
+
+#### 0.3 - 15/06/2013
+* Added cleanup functionality to entry data when a language is removed or added in the field's settings. Now if an existing Babeltext field's languages are edited in the field's settings, Babeltext goes through all entries that use the field and updates the entry data to reflect the changes (i.e.; removing a language will remove that languages contents in the entry data). 
+* Fixed PHP errors when no language parameter was set on tag pairs
+* Fixed PHP errors when the language parameter contains a language ID that is not set for the field. Now just returns empty strings.

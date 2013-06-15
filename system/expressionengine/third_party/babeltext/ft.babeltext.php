@@ -400,7 +400,59 @@ class Babeltext_ft extends EE_Fieldtype {
 	 */
 	function post_save_settings($data)
 	{
-
+		
+		// Field column name in channel_data db table
+		$field_name = 'field_id_' . $data['field_id'];
+		
+		// Get all channel data that use this field
+		$select_sql = "entry_id, $field_name AS bt_content";
+		$this->EE->db->select($select_sql, FALSE);
+		$this->EE->db->from('channel_data');
+		$this->EE->db->where("$field_name !=", '');
+		$query = $this->EE->db->get();
+		
+		// If we have results lets loop through them
+		if($query->num_rows())
+		{
+			
+			// Array to hold the data for the update
+			$update_data = array();
+			
+			// Loop through the results
+			foreach($query->result() as $row)
+			{
+				
+				// Get the old data in the entry and prep the new data
+				$old_data = $this->pre_process($row->bt_content);
+				$new_data = array();
+				
+				// Loop though the setting languages that were just saved
+				foreach($this->settings['languages'] as $key => $value)
+				{
+					// Get the existing data for each language
+					$new_data[$key] = array(
+						'name' => $value['name'],
+						'content' => (array_key_exists($key, $old_data) ? $old_data[$key]['content'] : '')
+					);
+					
+				}
+				
+				// Serialize the new data into a json string
+				$new_data_string = json_encode($new_data);
+				
+				// Add the content and the entry id to the update array
+				$update_data[] = array(
+					'entry_id' => $row->entry_id,
+					$field_name => $new_data_string
+				); 
+				
+			}
+			
+			// Use CI batch update to update the data in the channel data table
+			$this->EE->db->update_batch('channel_data', $update_data, 'entry_id');
+			
+		}
+		
 	}	
 
 
@@ -429,8 +481,9 @@ class Babeltext_ft extends EE_Fieldtype {
 		
 		// Data we will prep to return
 		$return_data = array();
+		$params = is_array($params) ? $params : array();
 		
-		// Get the language parameter if it exists and is not dynamic
+		// Get the language parameter if it exists
 		if((array_key_exists('language', $params)) && ($params['language'] !== 'dynamic') && ($params['language'] !== ''))
 		{
 			
@@ -451,11 +504,19 @@ class Babeltext_ft extends EE_Fieldtype {
 				
 			}
 			
+			// Make sure we have some data, if not return empty strings
+			if(!$return_data) {
+				$return_data[] = array(
+					'bt_id' => '',
+					'bt_name' => '',
+					'bt_content' => ''
+				);
+			}
+			
 			
 		} else {
 			
-			// There is no language parameter or the tag has been set to dynamic. Try and get the language key from the URL
-			// NOTE: This is the default functionality when no language parameter is included
+			// There is no language parameter. Try and get the language key from the URL
 			
 			// Get the current URL string and parse it to check the first segment after the domain (i.e.; http://example.com/es/)
 			$current_url = $this->EE->functions->fetch_current_uri();
@@ -511,7 +572,7 @@ class Babeltext_ft extends EE_Fieldtype {
 		// Single Tag Output
 		else
 		{
-			$output = $return_data[0]['bt_content']; // First content element in the return data array (in case they have input multiple in a single tag)
+			$output = $return_data ? $return_data[0]['bt_content'] : ''; // First content element in the return data array (in case they have input multiple in a single tag)
 		}
 		
 		return $output;
