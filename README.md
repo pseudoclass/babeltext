@@ -121,3 +121,6 @@ My initial plan is to release this fieldtype as a Beta to the EE Community to se
 * Added cleanup functionality to entry data when a language is removed or added in the field's settings. Now if an existing Babeltext field's languages are edited in the field's settings, Babeltext goes through all entries that use the field and updates the entry data to reflect the changes (i.e.; removing a language will remove that languages contents in the entry data). 
 * Fixed PHP errors when no language parameter was set on tag pairs
 * Fixed PHP errors when the language parameter contains a language ID that is not set for the field. Now just returns empty strings.
+
+#### 0.3.1 - 18/06/2013
+* Bug Fix for PHP error in EE 2.6.1 on setting up Babeltext for the first time.

@@ -13,7 +13,7 @@ class Babeltext_ft extends EE_Fieldtype {
 	// Fieldtype Info
 	public $info = array(
 		'name'		=> 'Babeltext',
-		'version'	=> '0.2'
+		'version'	=> '0.3.1'
 	);
 	
 	// Temp array structure of languages
@@ -400,57 +400,63 @@ class Babeltext_ft extends EE_Fieldtype {
 	 */
 	function post_save_settings($data)
 	{
-		
-		// Field column name in channel_data db table
-		$field_name = 'field_id_' . $data['field_id'];
-		
-		// Get all channel data that use this field
-		$select_sql = "entry_id, $field_name AS bt_content";
-		$this->EE->db->select($select_sql, FALSE);
-		$this->EE->db->from('channel_data');
-		$this->EE->db->where("$field_name !=", '');
-		$query = $this->EE->db->get();
-		
-		// If we have results lets loop through them
-		if($query->num_rows())
+	
+		// If this is not a new setup only
+		if($data['field_id'] != '')
 		{
+		
+			// Field column name in channel_data db table
+			$field_name = 'field_id_' . $data['field_id'];
 			
-			// Array to hold the data for the update
-			$update_data = array();
+			// Get all channel data that use this field
+			$select_sql = "entry_id, $field_name AS bt_content";
+			$this->EE->db->select($select_sql, FALSE);
+			$this->EE->db->from('channel_data');
+			$this->EE->db->where("$field_name !=", '');
+			$query = $this->EE->db->get();
 			
-			// Loop through the results
-			foreach($query->result() as $row)
+			// If we have results lets loop through them
+			if($query->num_rows())
 			{
 				
-				// Get the old data in the entry and prep the new data
-				$old_data = $this->pre_process($row->bt_content);
-				$new_data = array();
+				// Array to hold the data for the update
+				$update_data = array();
 				
-				// Loop though the setting languages that were just saved
-				foreach($this->settings['languages'] as $key => $value)
+				// Loop through the results
+				foreach($query->result() as $row)
 				{
-					// Get the existing data for each language
-					$new_data[$key] = array(
-						'name' => $value['name'],
-						'content' => (array_key_exists($key, $old_data) ? $old_data[$key]['content'] : '')
-					);
+					
+					// Get the old data in the entry and prep the new data
+					$old_data = $this->pre_process($row->bt_content);
+					$new_data = array();
+					
+					// Loop though the setting languages that were just saved
+					foreach($this->settings['languages'] as $key => $value)
+					{
+						// Get the existing data for each language
+						$new_data[$key] = array(
+							'name' => $value['name'],
+							'content' => (array_key_exists($key, $old_data) ? $old_data[$key]['content'] : '')
+						);
+						
+					}
+					
+					// Serialize the new data into a json string
+					$new_data_string = json_encode($new_data);
+					
+					// Add the content and the entry id to the update array
+					$update_data[] = array(
+						'entry_id' => $row->entry_id,
+						$field_name => $new_data_string
+					); 
 					
 				}
 				
-				// Serialize the new data into a json string
-				$new_data_string = json_encode($new_data);
-				
-				// Add the content and the entry id to the update array
-				$update_data[] = array(
-					'entry_id' => $row->entry_id,
-					$field_name => $new_data_string
-				); 
+				// Use CI batch update to update the data in the channel data table
+				$this->EE->db->update_batch('channel_data', $update_data, 'entry_id');
 				
 			}
-			
-			// Use CI batch update to update the data in the channel data table
-			$this->EE->db->update_batch('channel_data', $update_data, 'entry_id');
-			
+		
 		}
 		
 	}	
