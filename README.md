@@ -124,3 +124,6 @@ My initial plan is to release this fieldtype as a Beta to the EE Community to se
 
 #### 0.3.1 - 18/06/2013
 * Bug Fix for PHP error in EE 2.6.1 on setting up Babeltext for the first time.
+
+#### 0.3.2 - 06/11/2013
+* Bug Fix for Native RTE fieldtype passing blank fields as valid due to RTE's use of Unicode zero space characters.

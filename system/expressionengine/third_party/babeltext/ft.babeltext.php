@@ -13,7 +13,7 @@ class Babeltext_ft extends EE_Fieldtype {
 	// Fieldtype Info
 	public $info = array(
 		'name'		=> 'Babeltext',
-		'version'	=> '0.3.1'
+		'version'	=> '0.3.2'
 	);
 	
 	// Temp array structure of languages
@@ -42,9 +42,9 @@ class Babeltext_ft extends EE_Fieldtype {
 	 * @access	public
 	 *
 	 */
-	function Babeltext_ft()
+	public function __construct()
 	{
-		parent::EE_Fieldtype();
+		parent::__construct();
 		
 		// Default language is english
 		$this->languages = array(
@@ -740,6 +740,16 @@ class Babeltext_ft extends EE_Fieldtype {
 		$total_valid = 0;
 		$error_langs = array();
 		
+		// Empty RTE Values
+		$empty_rte = array(
+			'',
+			'<br>',
+			'<br/>',
+			'<br />',
+			'<p></p>',
+			'<p>​</p>' // Zero-width character
+		);
+		
 		// Loop through the settings to test on required fields 
 		foreach($this->settings['languages'] as $key => $value)
 		{
@@ -749,9 +759,10 @@ class Babeltext_ft extends EE_Fieldtype {
 				
 				$post_data = trim($this->EE->input->post('bt_' . $key . '_field_id_' . $this->field_id));
 				$post_data = strip_tags($post_data, '<img>');
+				$post_data = str_replace("\xe2\x80\x8b", '', $post_data);
 				$total_req += 1;
 				
-				if(empty($post_data))
+				if(empty($post_data) || in_array($post_data, $empty_rte))
 				{
 					$error_langs[] = lang('bt_lang_' . $key);
 				}
