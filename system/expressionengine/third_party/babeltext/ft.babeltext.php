@@ -13,7 +13,7 @@ class Babeltext_ft extends EE_Fieldtype {
 	// Fieldtype Info
 	public $info = array(
 		'name'		=> 'Babeltext',
-		'version'	=> '0.3.2'
+		'version'	=> '0.3.3'
 	);
 	
 	// Temp array structure of languages
@@ -84,6 +84,11 @@ class Babeltext_ft extends EE_Fieldtype {
 		
 		// Load the language file
 		$this->EE->lang->loadfile('babeltext');
+
+		// Theme folder
+		$theme_folder = defined( 'URL_THIRD_THEMES' )
+			? $this->EE->config->item('url_third_themes') . '/babeltext/'
+			: $this->EE->config->item('theme_folder_url') . 'third_party/babeltext/';
 		
 		// Decode the data into an array
 		$data = (array) json_decode(htmlspecialchars_decode($data), TRUE);
@@ -143,7 +148,6 @@ class Babeltext_ft extends EE_Fieldtype {
 		$data_arr['all_languages'] = json_encode($data_arr['all_languages']);
 		
 		// Add in the CSS and JS if it's not already cached
-		$theme_folder = $this->EE->config->item('theme_folder_url') . 'third_party/babeltext/';
 		$this->EE->cp->add_to_head('<link rel="stylesheet" type="text/css" href="' . $theme_folder . 'styles/babeltext_display.css" />');
 		$this->EE->cp->add_to_foot('<script type="text/javascript" src="' . $theme_folder . 'scripts/babeltext_display.js"></script>');
 		
@@ -189,6 +193,11 @@ class Babeltext_ft extends EE_Fieldtype {
 		
 		// Load the language file
 		$this->EE->lang->loadfile('babeltext');
+
+		// Theme folder
+		$theme_folder = defined( 'URL_THIRD_THEMES' )
+			? $this->EE->config->item('url_third_themes') . '/babeltext/'
+			: $this->EE->config->item('theme_folder_url') . 'third_party/babeltext/';
 		
 		// Content type options (Basic)
 		$type_options = array(
@@ -286,7 +295,6 @@ class Babeltext_ft extends EE_Fieldtype {
 		$this->EE->table->add_row($lang_label, $lang_table);
 		
 		// Add in the CSS and JS if it's not already cached
-		$theme_folder = $this->EE->config->item('theme_folder_url') . 'third_party/babeltext/';
 		$this->EE->cp->add_to_head('<link rel="stylesheet" type="text/css" href="' . $theme_folder . 'styles/babeltext_settings.css" />');
 		$this->EE->cp->add_to_foot('<script type="text/javascript">
 			var  BT_LANG_LTR = "' . lang('bt_ltr') . '";
